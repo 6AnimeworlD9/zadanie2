@@ -6,34 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ScrollView
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="#F44336"
         app:layout_constraintBottom_toTopOf="@+id/startStopBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/output"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/startStopBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="#4AC364"
         android:clickable="true"
+        android:contentDescription="@string/start_stop_location_listening"
+        app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_lock_power_off"
-        android:contentDescription="@string/start_stop_location_listening" />
+        app:srcCompat="@android:drawable/ic_lock_power_off" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
