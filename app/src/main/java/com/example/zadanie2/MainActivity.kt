@@ -1,30 +1,29 @@
 package com.example.zadanie2
 
 import android.Manifest
-import android.R.id
-import android.widget.Toolbar
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity: AppCompatActivity(),OnMapReadyCallback{
     private lateinit var startStopBtn: FloatingActionButton
+    private lateinit var findMe: FloatingActionButton
     private lateinit var output: LinearLayout
     private var mapView: MapView? = null
     private var gmap: GoogleMap? = null
-    private var lat = 40.7143528
-    private var long= -74.0059731
+    private var lat=0.0
+    private var long=0.0
 
     companion object {
         private const val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
@@ -69,19 +68,23 @@ class MainActivity: AppCompatActivity(),OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {
         gmap = googleMap
         gmap?.setMinZoomPreference(12f)
-        val ny = LatLng(lat, long)
-        gmap?.moveCamera(CameraUpdateFactory.newLatLng(ny))
-    }
-    fun onMapReady1(googleMap: GoogleMap?) {
-        gmap = googleMap
-        gmap?.setMinZoomPreference(12f)
-        val ny = LatLng(lat, long)
-        gmap?.moveCamera(CameraUpdateFactory.newLatLng(ny))
+        gmap?.setIndoorEnabled(true)
+        val uiSettings: UiSettings? = gmap?.getUiSettings()
+        uiSettings?.isIndoorLevelPickerEnabled = true
+        uiSettings?.isMyLocationButtonEnabled = true
+        uiSettings?.isMapToolbarEnabled = true
+        uiSettings?.isCompassEnabled = true
+        uiSettings?.isZoomControlsEnabled = true
+        findMe = findViewById<FloatingActionButton>(R.id.findMe).apply{
+            setOnClickListener {
+               locationChanged(null)
+            }
+        }
     }
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0
@@ -104,14 +107,36 @@ class MainActivity: AppCompatActivity(),OnMapReadyCallback{
 
     private val locationObserver: (Location) -> Unit = ::locationChanged
 
-    private fun locationChanged(l: Location){
-        /*val tv = TextView(this@MainActivity)
-        tv.textSize = 18F
-        tv.text = getString(R.string.position, l.latitude, l.longitude)
-        output.addView(tv)*/
-        lat=l.latitude
-        long=l.longitude
-        onMapReady1(null)
+    private fun locationChanged(l: Location?){
+        if(l!=null) {
+            gmap?.clear()
+            lat = l.latitude
+            long = l.longitude
+            val t = findViewById<TextView>(R.id.textView)
+            val t1 = findViewById<TextView>(R.id.textView2)
+            val new = LatLng(lat, long)
+            t.text = "Ширина: " + lat.toString()
+            t1.text = "Долгота: " + long.toString()
+            gmap?.moveCamera(CameraUpdateFactory.newLatLng(new))
+            val markerOptions = MarkerOptions()
+            markerOptions.position(new)
+            markerOptions.title("Вы здесь")
+            gmap?.addMarker(markerOptions)
+        }
+        else
+        {
+            gmap?.clear()
+            val t = findViewById<TextView>(R.id.textView)
+            val t1 = findViewById<TextView>(R.id.textView2)
+            val new = LatLng(lat, long)
+            t.text = "Ширина: " + lat.toString()
+            t1.text = "Долгота: " + long.toString()
+            gmap?.moveCamera(CameraUpdateFactory.newLatLng(new))
+            val markerOptions = MarkerOptions()
+            markerOptions.position(new)
+            markerOptions.title("Вы здесь")
+            gmap?.addMarker(markerOptions)
+        }
     }
 
     private fun changeServiceState(forceStart: Boolean = false) {
