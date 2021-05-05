@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -60,7 +59,7 @@ class MainActivity: AppCompatActivity(),OnMapReadyCallback{
             mapViewBundle = Bundle()
             outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle)
         }
-        mapView!!.onSaveInstanceState(mapViewBundle)
+        mapView?.onSaveInstanceState(mapViewBundle)
     }
     private fun requestLocationPermission() {
         this.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
@@ -152,35 +151,35 @@ class MainActivity: AppCompatActivity(),OnMapReadyCallback{
     override fun onPause() {
         super.onPause()
         LocationData.location.removeObserver(locationObserver)
-        mapView!!.onPause()
+        mapView?.onPause()
     }
 
     override fun onResume() {
         super.onResume()
         if (LocationService.running)
             LocationData.location.observe(this, locationObserver)
-        mapView!!.onResume()
+        mapView?.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-        mapView!!.onStart()
+        mapView?.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mapView!!.onStop()
+        mapView?.onStop()
     }
 
 
     override fun onDestroy() {
-        mapView!!.onDestroy()
+        mapView?.onDestroy()
         super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView!!.onLowMemory()
+        mapView?.onLowMemory()
     }
 }
 

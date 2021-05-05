@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.RequiresApi
 
 class GpsHelper private constructor() : LocationListener{
@@ -19,7 +20,6 @@ class GpsHelper private constructor() : LocationListener{
         fun getInstance() = instance ?: GpsHelper().also { instance = it }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun startLocationListening(context: Context, locationUpdater: (Location)->Unit){
         locationManager = (context.getSystemService(Context.LOCATION_SERVICE) as LocationManager)
             .also {   locationManager ->
@@ -49,5 +49,9 @@ class GpsHelper private constructor() : LocationListener{
     override fun onLocationChanged(location: Location) {
         locationUpdater?.invoke(location)
     }
+   override fun onProviderEnabled(provider: String) {}
 
+    override fun onProviderDisabled(provider: String) {}
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 }
