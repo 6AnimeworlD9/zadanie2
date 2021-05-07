@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -18,8 +19,9 @@ class LocationService : LifecycleService() {
     companion object{
         var running = false
     }
-
     private val locationChanged: (Location)->Unit = ::locationChanged
+    private var locator: GpsHelper? = null
+
 
     private fun locationChanged(l: Location){
         LocationData.location.value = l
@@ -35,11 +37,16 @@ class LocationService : LifecycleService() {
                 Constants.START_LOCATION_SERVICE -> {
                     running = true
                     startForeground(intent)
-                    GpsHelper.getInstance().startLocationListening(this.applicationContext, locationChanged)
+                    locator = GpsHelper(applicationContext).apply{
+                        startLocationListening(locationChanged)
+                    }
                 }
                 Constants.STOP_LOCATION_SERVICE -> {
                     running = false
-                    GpsHelper.getInstance().stopLocating()
+                    locator?.let {
+                        it.stopLocating()
+                        locator = null
+                    }
                     stopService(intent)
                 }
                 else ->{}

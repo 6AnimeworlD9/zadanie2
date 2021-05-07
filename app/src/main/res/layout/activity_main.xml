@@ -66,6 +66,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/goToSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#FFEB3B"
+        android:text="НАСТРОЙКИ"
+        android:onClick="goToSettingsClick"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/measureDistance"
+        android:layout_width="145dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="#FFEB3B"
+        android:onClick="measureDistanceClick"
+        android:text="ИЗМЕРИТЬ РАССТОЯНИЕ \n ДО ТОЧКИ"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
