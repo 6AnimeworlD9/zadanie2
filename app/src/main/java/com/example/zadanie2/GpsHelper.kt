@@ -1,6 +1,7 @@
 package com.example.zadanie2
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -11,6 +12,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+
 class GpsHelper(val context: Context) : LocationListener{
     private var locationManager: LocationManager? = null
     private var locationUpdater: ((Location)->Unit)? = null

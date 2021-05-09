@@ -29,6 +29,7 @@ class LocationService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        LocationData.location.observe(this, locationObserver)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -54,7 +55,19 @@ class LocationService : LifecycleService() {
         }
         return super.onStartCommand(intent, flags, startId)
     }
-
+    private val locationObserver: (Location) -> Unit = ::locationChanged1
+    private fun locationChanged1(l: Location?){
+        val nManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationBuilder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
+        val notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(android.R.mipmap.sym_def_app_icon)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setContentText("Ширина: " + l?.latitude.toString() + '\n' + "Долгота: " + l?.longitude.toString())
+                .setContentTitle("Ваши координаты")
+                .build()
+        nManager.notify(Constants.FOREGROUND_ID, notification)
+    }
     fun startForeground(service: Intent?) {
         //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId =
