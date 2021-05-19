@@ -183,9 +183,6 @@ class MainActivity: AppCompatActivity(),OnMapReadyCallback{
     }
 
 
-    fun measureDistanceClick(view: View) {
-        Toast.makeText(this.applicationContext, "Нажмите на точку до которой нужно измерить расстояние", Toast.LENGTH_LONG).show()
-    }
     fun goToSettingsClick(view: View) {
         var i=Bundle()
         val p = Intent(this, Settings::class.java)
